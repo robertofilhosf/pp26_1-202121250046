@@ -3,6 +3,7 @@ package debate;
 import java.util.Scanner;
 
 public class CLI {
+
     private final FachadaDebate f;
     private final Scanner scanner;
 
@@ -30,7 +31,9 @@ public class CLI {
                     System.out.println("Encerrando...");
                     executando = false;
                 }
-                default -> System.out.println("Opção inválida. Tente novamente.");
+                default -> System.out.println(
+                    "Opção inválida. Tente novamente."
+                );
             }
             System.out.println();
         }
@@ -38,14 +41,19 @@ public class CLI {
     }
 
     private void exibirCabecalho() {
-        System.out.println("=== Gerenciador de Debate Político (CLI) ===");
-        System.out.println("Tempos do debate " + f.get_config().get_texto_configuracao_menu());
+        System.out.println("=== Gerenciador de Debate Político ===");
+        System.out.println(
+            "Tempos do debate " + f.get_config().get_texto_configuracao_menu()
+        );
         System.out.println();
     }
 
     private void exibirMenu() {
         System.out.println("Menu:");
-        System.out.println("  1 - Configurar tempos do debate " + f.get_config().get_texto_configuracao_menu());
+        System.out.println(
+            "  1 - Configurar tempos do debate " +
+                f.get_config().get_texto_configuracao_menu()
+        );
         System.out.println("  2 - Cadastrar político");
         System.out.println("  3 - Sortear inquiridor");
         System.out.println("  4 - Escolher inquirido");
@@ -59,13 +67,27 @@ public class CLI {
     private void configurarTempos() {
         ConfiguraTempo atual = f.get_config();
         System.out.println("\nTempos atuais: " + atual.resumo_tempos());
-        System.out.println("Informe a duração de cada etapa em segundos (mínimo 1).");
+        System.out.println(
+            "Informe a duração de cada etapa em segundos (mínimo 1)."
+        );
         System.out.println("Pressione Enter para manter o valor atual.\n");
 
-        int pergunta = lerInteiroComPadrao("Tempo da pergunta (s)", atual.get_temp_pergunta());
-        int resposta = lerInteiroComPadrao("Tempo da resposta (s)", atual.get_temp_resposta());
-        int replica = lerInteiroComPadrao("Tempo da réplica (s)", atual.get_temp_replica());
-        int treplica = lerInteiroComPadrao("Tempo da tréplica (s)", atual.get_temp_treplica());
+        int pergunta = lerInteiroComPadrao(
+            "Tempo da pergunta (s)",
+            atual.get_temp_pergunta()
+        );
+        int resposta = lerInteiroComPadrao(
+            "Tempo da resposta (s)",
+            atual.get_temp_resposta()
+        );
+        int replica = lerInteiroComPadrao(
+            "Tempo da réplica (s)",
+            atual.get_temp_replica()
+        );
+        int treplica = lerInteiroComPadrao(
+            "Tempo da tréplica (s)",
+            atual.get_temp_treplica()
+        );
         f.configuracao(pergunta, resposta, replica, treplica);
     }
 
@@ -110,7 +132,9 @@ public class CLI {
                 }
                 return valor;
             } catch (NumberFormatException e) {
-                System.out.println("Valor inválido. Informe um número inteiro.");
+                System.out.println(
+                    "Valor inválido. Informe um número inteiro."
+                );
             }
         }
     }
