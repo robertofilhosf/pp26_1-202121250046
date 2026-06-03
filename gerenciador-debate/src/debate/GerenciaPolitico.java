@@ -15,10 +15,29 @@ public class GerenciaPolitico {
         this.random = new Random();
     }
 
+    /**
+     * Cria um político utilizando o PoliticoBuilder (padrão Builder).
+     */
     public void criar_politico(String nome, String partido, MediadorBase mediador, GerenciaEleitor gerenciaEleitor) {
-        ColaboradorPolitico politico = new ColaboradorPolitico(nome, partido);
-        politico.set_mediador(mediador);
-        politico.set_gerencia_eleitor(gerenciaEleitor);
+        ColaboradorPolitico politico = new PoliticoBuilder()
+                .comNome(nome)
+                .comPartido(partido)
+                .comMediador(mediador)
+                .comGerenciaEleitor(gerenciaEleitor)
+                .build();
+        politicos.add(politico);
+        quant_politicos++;
+    }
+
+    /**
+     * Cria um político a partir de um protótipo existente (Prototype + Builder).
+     * Clona o protótipo e aplica novo nome e partido.
+     */
+    public void criar_politico_de_prototipo(ColaboradorPolitico prototipo, String nome, String partido) {
+        ColaboradorPolitico politico = new PoliticoBuilder(prototipo)
+                .comNome(nome)
+                .comPartido(partido)
+                .build();
         politicos.add(politico);
         quant_politicos++;
     }

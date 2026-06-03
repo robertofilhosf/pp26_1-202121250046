@@ -2,7 +2,7 @@
 
 ## Visão Geral
 
-O sistema simula um debate político entre colaboradores (políticos), com controle de tempo de fala, mediação, log de eventos e suporte a interfaces gráfica (GUI) e de linha de comando (CLI). O design utiliza os padrões **Singleton** (FachadaDebate, LogSistem), **Mediator** (MediadorBase / MediarDebate), e **Facade** (FachadaDebate).
+O sistema simula um debate político entre colaboradores (políticos), com controle de tempo de fala, mediação, log de eventos e suporte a interfaces gráfica (GUI) e de linha de comando (CLI). O design utiliza os padrões **Singleton** (FachadaDebate, LogSistem), **Mediator** (MediadorBase / MediarDebate), **Facade** (FachadaDebate), **Observer** (ObservadorEleitor, Eleitor, GerenciaEleitor), **Builder** (PoliticoBuilder, EleitorBuilder) e **Prototype** (ColaboradorPolitico, Eleitor — via `Cloneable`).
 
 ---
 
@@ -39,8 +39,8 @@ Interface base para o mediador do debate. Implementada por `MediarDebate`.
 
 ---
 
-### `ColaboradorPolitico`
-Representa um político participante do debate. Pode atuar como inquiridor ou inquirido. Implementa o papel genérico antes de ser especializado.
+### `ColaboradorPolitico` *(Prototype — implementa Cloneable)*
+Representa um político participante do debate. Pode atuar como inquiridor ou inquirido. Implementa o papel genérico antes de ser especializado. **Implementa `Cloneable`** para permitir a clonagem de instâncias (padrão Prototype).
 
 **Atributos:**
 - `nome: str`
@@ -50,7 +50,9 @@ Representa um político participante do debate. Pode atuar como inquiridor ou in
 - `mediador: MediadorBase` — referência ao mediador
 
 **Métodos:**
-- `ColaboradorPolitico(nome, partido)` — construtor; define `inquiridor = False`
+- `ColaboradorPolitico()` — construtor padrão (para uso pelo Builder)
+- `ColaboradorPolitico(nome, partido)` — construtor com nome e partido
+- `clone(): ColaboradorPolitico` — **Prototype**: retorna uma cópia do objeto, com um novo `Microfone` próprio
 - `OperacaoMediada()` — realiza operação mediada (delegada ao mediador)
 - `set_nome(n: str)` / `get_nome(): str`
 - `set_partido(p: str)` / `get_partido(): str`
@@ -75,6 +77,44 @@ Papel do político que responde e faz tréplicas.
 **Métodos:**
 - `responder(tempo: int, log: LogSistem)` — liga microfone, aguarda o tempo de resposta, desliga e registra no log
 - `treplica(tempo: int, log: LogSistem)` — liga microfone, aguarda o tempo de tréplica, desliga e registra no log
+
+---
+
+### `PoliticoBuilder` *(padrão Builder)*
+Builder para construção passo a passo de `ColaboradorPolitico`. Usa **fluent API** para encadeamento de métodos. Pode opcionalmente receber um **protótipo** (padrão Prototype) para clonar e personalizar.
+
+**Atributos:**
+- `nome: String`
+- `partido: String`
+- `mediador: MediadorBase`
+- `gerenciaEleitor: GerenciaEleitor`
+- `prototipo: ColaboradorPolitico` — protótipo para clonagem (opcional)
+
+**Métodos:**
+- `PoliticoBuilder()` — construtor para criação do zero
+- `PoliticoBuilder(prototipo: ColaboradorPolitico)` — construtor a partir de protótipo (Prototype + Builder)
+- `comNome(nome: String): PoliticoBuilder`
+- `comPartido(partido: String): PoliticoBuilder`
+- `comMediador(mediador: MediadorBase): PoliticoBuilder`
+- `comGerenciaEleitor(ge: GerenciaEleitor): PoliticoBuilder`
+- `build(): ColaboradorPolitico` — constrói o objeto; se houver protótipo, clona-o antes
+
+---
+
+### `EleitorBuilder` *(padrão Builder)*
+Builder para construção passo a passo de `Eleitor`. Usa **fluent API** para encadeamento de métodos. Pode opcionalmente receber um **protótipo** para clonar e personalizar.
+
+**Atributos:**
+- `nome: String`
+- `candidatoPreferencia: ColaboradorPolitico`
+- `prototipo: Eleitor` — protótipo para clonagem (opcional)
+
+**Métodos:**
+- `EleitorBuilder()` — construtor para criação do zero
+- `EleitorBuilder(prototipo: Eleitor)` — construtor a partir de protótipo (Prototype + Builder)
+- `comNome(nome: String): EleitorBuilder`
+- `comCandidatoPreferencia(candidato: ColaboradorPolitico): EleitorBuilder`
+- `build(): Eleitor` — constrói o objeto; se houver protótipo, clona-o antes
 
 ---
 
@@ -108,16 +148,57 @@ Representa o microfone de um político. Controla ativação e contagem de tempo.
 ---
 
 ### `GerenciaPolitico`
-Gerencia a lista de políticos cadastrados no sistema.
+Gerencia a lista de políticos cadastrados no sistema. **Utiliza `PoliticoBuilder`** para criar instâncias.
 
 **Atributos:**
 - `politicos: List<ColaboradorPolitico>`
 - `quant_politicos: int`
 
 **Métodos:**
-- `criar_politico(nome: str, partido: str, mediador: MediadorBase)` — instancia e adiciona um `ColaboradorPolitico`
+- `criar_politico(nome: str, partido: str, mediador: MediadorBase, ge: GerenciaEleitor)` — cria político via **Builder**
+- `criar_politico_de_prototipo(proto: ColaboradorPolitico, nome: str, partido: str)` — cria político via **Prototype + Builder**
 - `obter_politico(nome: str, partido: str): ColaboradorPolitico` — busca um político pelo nome e partido
-- `sortear_politico(): ColaboradorPolitico` — sorteia aleatoriamente um político que ainda não foi inquiridor (ou reinicia os flags se todos já foram); define o flag `inquiridor = True`
+- `sortear_politico(): ColaboradorPolitico` — sorteia aleatoriamente um político
+
+---
+
+### `ObservadorEleitor` (interface)
+Interface do padrão Observer para notificação de eleitores.
+
+**Métodos:**
+- `receber_notificacao(mensagem: String)`
+
+---
+
+### `Eleitor` *(Prototype — implementa Cloneable + ObservadorEleitor)*
+Representa um eleitor que acompanha um candidato. **Implementa `Cloneable`** para o padrão Prototype.
+
+**Atributos:**
+- `nome: String`
+- `candidato_preferencia: ColaboradorPolitico`
+
+**Métodos:**
+- `Eleitor()` — construtor padrão (para uso pelo Builder)
+- `Eleitor(nome, candidato_preferencia)` — construtor completo
+- `clone(): Eleitor` — **Prototype**: retorna uma cópia do objeto
+- `receber_notificacao(mensagem: String)` — exibe a notificação ao eleitor
+- `set_nome(nome: String)` / `get_nome(): String`
+- `set_candidato_preferencia(c: ColaboradorPolitico)` / `get_candidato_preferencia(): ColaboradorPolitico`
+- `acompanha(nomeCandidato, partidoCandidato): bool`
+
+---
+
+### `GerenciaEleitor`
+Gerencia a lista de eleitores cadastrados. **Utiliza `EleitorBuilder`** para criar instâncias.
+
+**Atributos:**
+- `eleitores: List<Eleitor>`
+- `quant_eleitores: int`
+
+**Métodos:**
+- `cadastrar_eleitor(nomeEleitor, nomeCandidato, partido, gp): bool` — cadastra eleitor via **Builder**
+- `cadastrar_eleitor_de_prototipo(proto, nome, cand, partido, gp): bool` — cadastra eleitor via **Prototype + Builder**
+- `notificar_inicio_fala(nomeCandidato, partidoCandidato, etapa)` — notifica eleitores (Observer)
 
 ---
 
@@ -145,13 +226,17 @@ Ponto único de entrada para todas as operações do sistema. Orquestra configur
 - `config: ConfiguraTempo`
 - `mediador: MediadorBase`
 - `gerenciador: GerenciaPolitico`
+- `gerencia_eleitor: GerenciaEleitor`
 - `log: LogSistem`
 
 **Métodos:**
 - `FachadaDebate()` — construtor privado; inicializa `config`, `mediador` (como `MediarDebate`), `gerenciador` e `log`
 - `get_instance(): FachadaDebate` — retorna a instância única
 - `configuracao(pergunta, resposta, replica, treplica: int)` — configura os tempos e registra no log
-- `cadastrar_politicos(nome, partido: str, mediador: MediadorBase)` — delega ao gerenciador e registra no log
+- `cadastrar_politicos(nome, partido: str, mediador: MediadorBase)` — delega ao gerenciador (via **Builder**) e registra no log
+- `cadastrar_politico_de_prototipo(nProt, pProt, nNovo, pNovo)` — cadastra político clonando protótipo (**Prototype + Builder**)
+- `cadastrar_eleitor(nomeEleitor, nomeCandidato, partidoCandidato)` — cadastra eleitor (via **Builder**)
+- `cadastrar_eleitor_de_prototipo(nProt, nNovo, nCand, pCand)` — cadastra eleitor clonando protótipo (**Prototype + Builder**)
 - `sorteio_inquiridor()` — sorteia e define o inquiridor via mediador; registra no log
 - `escolher_inquirido(nome, partido: str)` — obtém o político e o define como inquirido via mediador; registra no log
 - `executa_debate(config: ConfiguraTempo, log: LogSistem)` — delega ao mediador a execução do debate
@@ -185,9 +270,12 @@ Interface de linha de comando. Delega todas as operações à fachada.
 
 1. `FachadaDebate.get_instance()` — obtém a instância única
 2. `configuracao(...)` — define os tempos de cada etapa
-3. `cadastrar_politicos(...)` — cadastra os políticos (1..n)
-4. `sorteio_inquiridor()` — sorteia quem pergunta
-5. `escolher_inquirido(...)` — define quem responde
-6. `executa_debate(...)` — inicia o debate:
+3. `cadastrar_politicos(...)` — cadastra os políticos via **Builder** (1..n)
+4. `cadastrar_politico_de_prototipo(...)` — *(opcional)* cadastra político clonando existente (**Prototype + Builder**)
+5. `cadastrar_eleitor(...)` — cadastra eleitores via **Builder**
+6. `cadastrar_eleitor_de_prototipo(...)` — *(opcional)* cadastra eleitor clonando existente (**Prototype + Builder**)
+7. `sorteio_inquiridor()` — sorteia quem pergunta
+8. `escolher_inquirido(...)` — define quem responde
+9. `executa_debate(...)` — inicia o debate:
    - Inquiridor pergunta → Inquirido responde → Inquiridor replica → Inquirido tréplica
-7. `acessar_log()` — consulta o histórico de eventos
+10. `acessar_log()` — consulta o histórico de eventos

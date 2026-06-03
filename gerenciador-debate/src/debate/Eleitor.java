@@ -1,12 +1,26 @@
 package debate;
 
-public class Eleitor implements ObservadorEleitor {
-    private final String nome;
-    private final ColaboradorPolitico candidato_preferencia;
+public class Eleitor implements ObservadorEleitor, Cloneable {
+    private String nome;
+    private ColaboradorPolitico candidato_preferencia;
+
+    // Construtor padrão para uso pelo Builder
+    public Eleitor() {
+    }
 
     public Eleitor(String nome, ColaboradorPolitico candidato_preferencia) {
         this.nome = nome;
         this.candidato_preferencia = candidato_preferencia;
+    }
+
+    // --- Prototype: clone() ---
+    @Override
+    public Eleitor clone() {
+        try {
+            return (Eleitor) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Erro ao clonar Eleitor", e);
+        }
     }
 
     @Override
@@ -14,8 +28,16 @@ public class Eleitor implements ObservadorEleitor {
         System.out.println("[Eleitor " + nome + "] " + mensagem);
     }
 
+    public void set_nome(String nome) {
+        this.nome = nome;
+    }
+
     public String get_nome() {
         return nome;
+    }
+
+    public void set_candidato_preferencia(ColaboradorPolitico candidato) {
+        this.candidato_preferencia = candidato;
     }
 
     public ColaboradorPolitico get_candidato_preferencia() {

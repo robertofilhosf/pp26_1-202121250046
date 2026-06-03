@@ -1,0 +1,13 @@
+Init
+Configuração: pergunta=5s, resposta=5s, réplica=5s, tréplica=5s
+Político cadastrado: roberto (ifpb)
+Político cadastrado: jose (ufcg)
+Inquiridor sorteado: roberto (ifpb)
+Inquirido escolhido: jose (ufcg)
+Eleitor cadastrado: miguel acompanha roberto (ifpb)
+Início do debate: roberto x jose
+Pergunta: roberto (ifpb) - 5s
+Resposta: jose (ufcg) - 5s
+Réplica: roberto (ifpb) - 5s
+Tréplica: jose (ufcg) - 5s
+Fim do debate: roberto x jose

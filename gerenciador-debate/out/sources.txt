@@ -1,0 +1,17 @@
+src/debate/ConfiguraTempo.java
+src/debate/Microfone.java
+src/debate/MediadorBase.java
+src/debate/LogSistem.java
+src/debate/ColaboradorPolitico.java
+src/debate/Inquiridor.java
+src/debate/Inquirido.java
+src/debate/MediarDebate.java
+src/debate/GerenciaPolitico.java
+src/debate/FachadaDebate.java
+src/debate/CLI.java
+src/debate/GUI.java
+src/debate/ObservadorEleitor.java
+src/debate/Eleitor.java
+src/debate/GerenciaEleitor.java
+src/debate/PoliticoBuilder.java
+src/debate/EleitorBuilder.java

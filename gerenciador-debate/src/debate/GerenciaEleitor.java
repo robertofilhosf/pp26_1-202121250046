@@ -12,6 +12,9 @@ public class GerenciaEleitor {
         this.quant_eleitores = 0;
     }
 
+    /**
+     * Cadastra um eleitor utilizando o EleitorBuilder (padrão Builder).
+     */
     public boolean cadastrar_eleitor(String nomeEleitor, String nomeCandidato, String partidoCandidato,
             GerenciaPolitico gerenciaPolitico) {
         ColaboradorPolitico candidato = gerenciaPolitico.obter_politico(nomeCandidato, partidoCandidato);
@@ -23,7 +26,34 @@ public class GerenciaEleitor {
                 return false;
             }
         }
-        Eleitor eleitor = new Eleitor(nomeEleitor, candidato);
+        Eleitor eleitor = new EleitorBuilder()
+                .comNome(nomeEleitor)
+                .comCandidatoPreferencia(candidato)
+                .build();
+        eleitores.add(eleitor);
+        quant_eleitores++;
+        return true;
+    }
+
+    /**
+     * Cadastra um eleitor a partir de um protótipo existente (Prototype + Builder).
+     * Clona o protótipo e atribui um novo nome e candidato.
+     */
+    public boolean cadastrar_eleitor_de_prototipo(Eleitor prototipo, String nomeEleitor,
+            String nomeCandidato, String partidoCandidato, GerenciaPolitico gerenciaPolitico) {
+        ColaboradorPolitico candidato = gerenciaPolitico.obter_politico(nomeCandidato, partidoCandidato);
+        if (candidato == null) {
+            return false;
+        }
+        for (Eleitor e : eleitores) {
+            if (e.get_nome().equalsIgnoreCase(nomeEleitor)) {
+                return false;
+            }
+        }
+        Eleitor eleitor = new EleitorBuilder(prototipo)
+                .comNome(nomeEleitor)
+                .comCandidatoPreferencia(candidato)
+                .build();
         eleitores.add(eleitor);
         quant_eleitores++;
         return true;

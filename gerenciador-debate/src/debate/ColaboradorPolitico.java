@@ -1,6 +1,6 @@
 package debate;
 
-public class ColaboradorPolitico {
+public class ColaboradorPolitico implements Cloneable {
     private String nome;
     private String partido;
     private boolean inquiridor;
@@ -8,11 +8,29 @@ public class ColaboradorPolitico {
     protected MediadorBase mediador;
     protected GerenciaEleitor gerencia_eleitor;
 
+    // Construtor padrão para uso pelo Builder
+    public ColaboradorPolitico() {
+        this.inquiridor = false;
+        this.microfone = new Microfone();
+    }
+
     public ColaboradorPolitico(String nome, String partido) {
         this.nome = nome;
         this.partido = partido;
         this.inquiridor = false;
         this.microfone = new Microfone();
+    }
+
+    // --- Prototype: clone() ---
+    @Override
+    public ColaboradorPolitico clone() {
+        try {
+            ColaboradorPolitico copia = (ColaboradorPolitico) super.clone();
+            copia.microfone = new Microfone(); // cada clone recebe um microfone próprio
+            return copia;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Erro ao clonar ColaboradorPolitico", e);
+        }
     }
 
     public void set_gerencia_eleitor(GerenciaEleitor gerencia) {
