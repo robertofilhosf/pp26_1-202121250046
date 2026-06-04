@@ -5,10 +5,10 @@ public class Eleitor implements ObservadorEleitor, Cloneable {
     private ColaboradorPolitico candidato_preferencia;
 
     // Construtor padrão para uso pelo Builder
-    public Eleitor() {
+    Eleitor() {
     }
 
-    public Eleitor(String nome, ColaboradorPolitico candidato_preferencia) {
+    Eleitor(String nome, ColaboradorPolitico candidato_preferencia) {
         this.nome = nome;
         this.candidato_preferencia = candidato_preferencia;
     }

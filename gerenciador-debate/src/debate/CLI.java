@@ -27,8 +27,6 @@ public class CLI {
                 case "5" -> f.executa_debate(f.get_config(), f.get_log());
                 case "6" -> f.acessar_log();
                 case "7" -> cadastrarEleitor();
-                case "8" -> cadastrarPoliticoDePrototipo();
-                case "9" -> cadastrarEleitorDePrototipo();
                 case "0" -> {
                     System.out.println("Encerrando...");
                     executando = false;
@@ -56,14 +54,12 @@ public class CLI {
             "  1 - Configurar tempos do debate " +
                 f.get_config().get_texto_configuracao_menu()
         );
-        System.out.println("  2 - Cadastrar político (Builder)");
+        System.out.println("  2 - Cadastrar político");
         System.out.println("  3 - Sortear inquiridor");
         System.out.println("  4 - Escolher inquirido");
         System.out.println("  5 - Executar debate");
         System.out.println("  6 - Acessar log");
-        System.out.println("  7 - Cadastrar eleitor para notificações (Builder)");
-        System.out.println("  8 - Cadastrar político a partir de protótipo (Prototype+Builder)");
-        System.out.println("  9 - Cadastrar eleitor a partir de protótipo (Prototype+Builder)");
+        System.out.println("  7 - Cadastrar eleitor para notificações");
         System.out.println("  0 - Sair");
         System.out.print("Escolha uma opção: ");
     }
@@ -103,19 +99,6 @@ public class CLI {
         f.cadastrar_politicos(nome, partido, f.get_mediador());
     }
 
-    private void cadastrarPoliticoDePrototipo() {
-        System.out.println("\n--- Cadastro de Político por Protótipo (Prototype + Builder) ---");
-        System.out.print("Nome do político existente (protótipo): ");
-        String nomeProto = scanner.nextLine().trim();
-        System.out.print("Partido do político existente: ");
-        String partidoProto = scanner.nextLine().trim();
-        System.out.print("Nome do novo político: ");
-        String novoNome = scanner.nextLine().trim();
-        System.out.print("Partido do novo político: ");
-        String novoPartido = scanner.nextLine().trim();
-        f.cadastrar_politico_de_prototipo(nomeProto, partidoProto, novoNome, novoPartido);
-    }
-
     private void cadastrarEleitor() {
         System.out.print("Nome do eleitor: ");
         String nomeEleitor = scanner.nextLine().trim();
@@ -124,19 +107,6 @@ public class CLI {
         System.out.print("Partido do candidato: ");
         String partidoCandidato = scanner.nextLine().trim();
         f.cadastrar_eleitor(nomeEleitor, nomeCandidato, partidoCandidato);
-    }
-
-    private void cadastrarEleitorDePrototipo() {
-        System.out.println("\n--- Cadastro de Eleitor por Protótipo (Prototype + Builder) ---");
-        System.out.print("Nome do eleitor existente (protótipo): ");
-        String nomeProto = scanner.nextLine().trim();
-        System.out.print("Nome do novo eleitor: ");
-        String novoNome = scanner.nextLine().trim();
-        System.out.print("Nome do candidato de preferência: ");
-        String nomeCandidato = scanner.nextLine().trim();
-        System.out.print("Partido do candidato: ");
-        String partidoCandidato = scanner.nextLine().trim();
-        f.cadastrar_eleitor_de_prototipo(nomeProto, novoNome, nomeCandidato, partidoCandidato);
     }
 
     private void escolherInquirido() {

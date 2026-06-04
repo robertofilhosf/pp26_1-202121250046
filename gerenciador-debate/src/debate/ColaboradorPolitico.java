@@ -9,12 +9,12 @@ public class ColaboradorPolitico implements Cloneable {
     protected GerenciaEleitor gerencia_eleitor;
 
     // Construtor padrão para uso pelo Builder
-    public ColaboradorPolitico() {
+    ColaboradorPolitico() {
         this.inquiridor = false;
         this.microfone = new Microfone();
     }
 
-    public ColaboradorPolitico(String nome, String partido) {
+    ColaboradorPolitico(String nome, String partido) {
         this.nome = nome;
         this.partido = partido;
         this.inquiridor = false;

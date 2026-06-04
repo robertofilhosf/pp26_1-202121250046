@@ -38,7 +38,7 @@ public class FachadaDebate {
      */
     public void cadastrar_politicos(String nome, String partido, MediadorBase mediadorRef) {
         gerenciador.criar_politico(nome, partido, mediadorRef, gerencia_eleitor);
-        log.register_log("Político cadastrado (Builder): " + nome + " (" + partido + ")");
+        log.register_log("Político cadastrado: " + nome + " (" + partido + ")");
         System.out.println("Político cadastrado: " + nome + " (" + partido + ")");
     }
 
@@ -56,9 +56,9 @@ public class FachadaDebate {
             return;
         }
         gerenciador.criar_politico_de_prototipo(prototipo, novoNome, novoPartido);
-        log.register_log("Político cadastrado (Prototype+Builder): " + novoNome + " (" + novoPartido
+        log.register_log("Político cadastrado: " + novoNome + " (" + novoPartido
                 + ") a partir de " + nomePrototipo + " (" + partidoPrototipo + ")");
-        System.out.println("Político cadastrado (clone): " + novoNome + " (" + novoPartido
+        System.out.println("Político cadastrado: " + novoNome + " (" + novoPartido
                 + ") — baseado em " + nomePrototipo + " (" + partidoPrototipo + ")");
     }
 
@@ -71,7 +71,7 @@ public class FachadaDebate {
                     + " -> " + nomeCandidato + " (" + partidoCandidato + ")");
             return;
         }
-        log.register_log("Eleitor cadastrado (Builder): " + nomeEleitor
+        log.register_log("Eleitor cadastrado: " + nomeEleitor
                 + " acompanha " + nomeCandidato + " (" + partidoCandidato + ")");
         System.out.println("Eleitor cadastrado: " + nomeEleitor
                 + " receberá notificações de " + nomeCandidato + " (" + partidoCandidato + ").");
@@ -103,10 +103,10 @@ public class FachadaDebate {
                     + " -> " + nomeCandidato + " (" + partidoCandidato + ")");
             return;
         }
-        log.register_log("Eleitor cadastrado (Prototype+Builder): " + novoNomeEleitor
+        log.register_log("Eleitor cadastrado: " + novoNomeEleitor
                 + " acompanha " + nomeCandidato + " (" + partidoCandidato
                 + ") — baseado em " + nomePrototipo);
-        System.out.println("Eleitor cadastrado (clone): " + novoNomeEleitor
+        System.out.println("Eleitor cadastrado: " + novoNomeEleitor
                 + " receberá notificações de " + nomeCandidato + " (" + partidoCandidato
                 + ") — baseado em " + nomePrototipo + ".");
     }

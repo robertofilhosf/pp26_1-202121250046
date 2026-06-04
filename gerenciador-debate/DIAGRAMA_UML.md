@@ -47,8 +47,8 @@ classDiagram
         ~microfone: Microfone
         ~mediador: MediadorBase
         ~gerencia_eleitor: GerenciaEleitor
-        +ColaboradorPolitico()
-        +ColaboradorPolitico(nome, partido)
+        ~ColaboradorPolitico()
+        ~ColaboradorPolitico(nome, partido)
         +clone(): ColaboradorPolitico
         +OperacaoMediada()
         +set_nome(n: String)
@@ -147,8 +147,8 @@ classDiagram
         <<Cloneable>>
         -nome: String
         -candidato_preferencia: ColaboradorPolitico
-        +Eleitor()
-        +Eleitor(nome, candidato_preferencia)
+        ~Eleitor()
+        ~Eleitor(nome, candidato_preferencia)
         +clone(): Eleitor
         +receber_notificacao(mensagem: String)
         +set_nome(nome: String)
@@ -220,9 +220,7 @@ classDiagram
         -exibirMenu()
         -configurarTempos()
         -cadastrarPolitico()
-        -cadastrarPoliticoDePrototipo()
         -cadastrarEleitor()
-        -cadastrarEleitorDePrototipo()
         -escolherInquirido()
         -lerInteiroComPadrao(rotulo, valorAtual): int
     }
