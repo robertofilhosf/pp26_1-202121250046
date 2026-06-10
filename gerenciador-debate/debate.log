@@ -38,3 +38,56 @@ AnaliseDR: DR(s) aprovado(s). Transitando para DireitoResposta.
 Defesa DR: Ciro (PDT) - 2s
 DireitoResposta: todas as defesas executadas. Retomando fluxo normal.
 Fim do debate: Lula x Bolsonaro
+Init
+Configuração: pergunta=60s, resposta=60s, réplica=60s, tréplica=60s, DR=60s
+Político cadastrado: teste (pt)
+Político cadastrado: teste2 (psol)
+Inquiridor sorteado: teste2 (psol)
+Eleitor cadastrado: teste3 acompanha teste (pt)
+Inquirido escolhido: teste (pt)
+Início do debate: teste2 x teste
+Init
+Configuração: pergunta=1s, resposta=1s, réplica=1s, tréplica=1s, DR=60s
+Político cadastrado: teste (teste)
+Político cadastrado: testa (testa)
+Inquiridor sorteado: testa (testa)
+Escolha de inquirido falhou: testa (teste) não encontrado.
+Inquirido escolhido: teste (teste)
+Início do debate: testa x teste
+Pergunta: testa (testa) - 1s
+Resposta: teste (teste) - 1s
+Réplica: testa (testa) - 1s
+Tréplica: teste (teste) - 1s
+AnaliseDR: nenhuma solicitação pendente.
+Fim do debate: testa x teste
+Init
+Init
+Init
+Configuração: pergunta=2s, resposta=4s, réplica=6s, tréplica=8s, DR=60s
+Político cadastrado: tat (tat)
+Político cadastrado: tet (tet)
+Escolha de inquirido falhou: inquiridor não definido.
+Inquiridor sorteado: tet (tet)
+Debate cancelado: inquiridor ou inquirido não definido.
+Inquiridor sorteado: tat (tat)
+Inquirido escolhido: tet (tet)
+Início do debate: tat x tet
+Pergunta: tat (tat) - 2s
+Resposta: tet (tet) - 4s
+Réplica: tat (tat) - 6s
+Tréplica: tet (tet) - 8s
+AnaliseDR: nenhuma solicitação pendente.
+Fim do debate: tat x tet
+Início do debate: tat x tet
+Pergunta: tat (tat) - 2s
+Resposta: tet (tet) - 4s
+Réplica: tat (tat) - 6s
+Tréplica: tet (tet) - 8s
+AnaliseDR: nenhuma solicitação pendente.
+Fim do debate: tat x tet
+Início do debate: tat x tet
+Pergunta: tat (tat) - 2s
+Resposta: tet (tet) - 4s
+Réplica: tat (tat) - 6s
+Tréplica: tet (tet) - 8s
+AnaliseDR: DR(s) aprovado(s). Transitando para DireitoResposta.
