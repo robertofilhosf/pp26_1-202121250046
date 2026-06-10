@@ -4,6 +4,7 @@ public class FachadaDebate {
     private static FachadaDebate instance;
     private final ConfiguraTempo config;
     private final MediadorBase mediador;
+    private final GerenteDebate gerente;
     private final GerenciaPolitico gerenciador;
     private final GerenciaEleitor gerencia_eleitor;
     private final LogSistem log;
@@ -11,6 +12,8 @@ public class FachadaDebate {
     private FachadaDebate() {
         this.config = new ConfiguraTempo();
         this.mediador = new MediarDebate();
+        this.gerente = new GerenteDebatePadrao();
+        ((MediarDebate) this.mediador).setGerente(this.gerente);
         this.gerenciador = new GerenciaPolitico();
         this.gerencia_eleitor = new GerenciaEleitor();
         this.log = LogSistem.get_instance("debate.log");
@@ -23,13 +26,14 @@ public class FachadaDebate {
         return instance;
     }
 
-    public void configuracao(int pergunta, int resposta, int replica, int treplica) {
+    public void configuracao(int pergunta, int resposta, int replica, int treplica, int direitoResposta) {
         config.set_temp_pergunta(pergunta);
         config.set_temp_resposta(resposta);
         config.set_temp_replica(replica);
         config.set_temp_treplica(treplica);
+        config.set_temp_direito_resposta(direitoResposta);
         log.register_log("Configuração: pergunta=" + pergunta + "s, resposta=" + resposta
-                + "s, réplica=" + replica + "s, tréplica=" + treplica + "s");
+                + "s, réplica=" + replica + "s, tréplica=" + treplica + "s, DR=" + direitoResposta + "s");
         System.out.println("Tempos configurados com sucesso.");
     }
 
@@ -179,5 +183,9 @@ public class FachadaDebate {
 
     public GerenciaEleitor get_gerencia_eleitor() {
         return gerencia_eleitor;
+    }
+
+    public GerenteDebate get_gerente() {
+        return gerente;
     }
 }

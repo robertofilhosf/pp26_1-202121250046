@@ -8,23 +8,21 @@ public class GerenciaPolitico {
     private final List<ColaboradorPolitico> politicos;
     private int quant_politicos;
     private final Random random;
+    private final DiretorPolitico diretor;
 
     public GerenciaPolitico() {
         this.politicos = new ArrayList<>();
         this.quant_politicos = 0;
         this.random = new Random();
+        this.diretor = new DiretorPolitico();
     }
 
     /**
      * Cria um político utilizando o PoliticoBuilder (padrão Builder).
      */
     public void criar_politico(String nome, String partido, MediadorBase mediador, GerenciaEleitor gerenciaEleitor) {
-        ColaboradorPolitico politico = new PoliticoBuilder()
-                .comNome(nome)
-                .comPartido(partido)
-                .comMediador(mediador)
-                .comGerenciaEleitor(gerenciaEleitor)
-                .build();
+        PoliticoBuilder builder = new ColaboradorPoliticoBuilder();
+        ColaboradorPolitico politico = diretor.construir(builder, nome, partido, mediador, gerenciaEleitor);
         politicos.add(politico);
         quant_politicos++;
     }
@@ -34,12 +32,17 @@ public class GerenciaPolitico {
      * Clona o protótipo e aplica novo nome e partido.
      */
     public void criar_politico_de_prototipo(ColaboradorPolitico prototipo, String nome, String partido) {
-        ColaboradorPolitico politico = new PoliticoBuilder(prototipo)
-                .comNome(nome)
-                .comPartido(partido)
-                .build();
+        PoliticoBuilder builder = new ColaboradorPoliticoBuilder(prototipo);
+        ColaboradorPolitico politico = diretor.construirDePrototipo(builder, nome, partido);
         politicos.add(politico);
         quant_politicos++;
+    }
+
+    public ColaboradorPolitico clonar_politico(ColaboradorPolitico original) {
+        if (original == null) {
+            return null;
+        }
+        return original.clone();
     }
 
     public ColaboradorPolitico obter_politico(String nome, String partido) {

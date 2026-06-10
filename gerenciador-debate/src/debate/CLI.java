@@ -88,7 +88,11 @@ public class CLI {
             "Tempo da tréplica (s)",
             atual.get_temp_treplica()
         );
-        f.configuracao(pergunta, resposta, replica, treplica);
+        int direito = lerInteiroComPadrao(
+            "Tempo do direito de resposta (s)",
+            atual.get_temp_direito_resposta()
+        );
+        f.configuracao(pergunta, resposta, replica, treplica, direito);
     }
 
     private void cadastrarPolitico() {

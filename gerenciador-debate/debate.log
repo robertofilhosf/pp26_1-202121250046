@@ -21,3 +21,20 @@ Inquiridor sorteado: Bolsonaro (PL)
 Escolha de inquirido falhou: mesma pessoa que o inquiridor (Bolsonaro / PL).
 Debate cancelado: inquiridor ou inquirido não definido.
 Init
+Init
+Configuração: pergunta=2s, resposta=2s, réplica=1s, tréplica=1s, DR=2s
+Político cadastrado: Lula (PT)
+Político cadastrado: Bolsonaro (PL)
+Político cadastrado: Ciro (PDT)
+Eleitor cadastrado: Eleitor do Lula acompanha Lula (PT)
+Eleitor cadastrado: Eleitor do Bolsonaro acompanha Bolsonaro (PL)
+Eleitor cadastrado: Eleitor do Ciro acompanha Ciro (PDT)
+Início do debate: Lula x Bolsonaro
+Pergunta: Lula (PT) - 2s
+Resposta: Bolsonaro (PL) - 2s
+Réplica: Lula (PT) - 1s
+Tréplica: Bolsonaro (PL) - 1s
+AnaliseDR: DR(s) aprovado(s). Transitando para DireitoResposta.
+Defesa DR: Ciro (PDT) - 2s
+DireitoResposta: todas as defesas executadas. Retomando fluxo normal.
+Fim do debate: Lula x Bolsonaro

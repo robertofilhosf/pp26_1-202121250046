@@ -6,10 +6,12 @@ import java.util.List;
 public class GerenciaEleitor {
     private final List<Eleitor> eleitores;
     private int quant_eleitores;
+    private final DiretorEleitor diretor;
 
     public GerenciaEleitor() {
         this.eleitores = new ArrayList<>();
         this.quant_eleitores = 0;
+        this.diretor = new DiretorEleitor();
     }
 
     /**
@@ -26,10 +28,8 @@ public class GerenciaEleitor {
                 return false;
             }
         }
-        Eleitor eleitor = new EleitorBuilder()
-                .comNome(nomeEleitor)
-                .comCandidatoPreferencia(candidato)
-                .build();
+        EleitorBuilder builder = new EleitorConcretoBuilder();
+        Eleitor eleitor = diretor.construir(builder, nomeEleitor, candidato);
         eleitores.add(eleitor);
         quant_eleitores++;
         return true;
@@ -50,13 +50,18 @@ public class GerenciaEleitor {
                 return false;
             }
         }
-        Eleitor eleitor = new EleitorBuilder(prototipo)
-                .comNome(nomeEleitor)
-                .comCandidatoPreferencia(candidato)
-                .build();
+        EleitorBuilder builder = new EleitorConcretoBuilder(prototipo);
+        Eleitor eleitor = diretor.construir(builder, nomeEleitor, candidato);
         eleitores.add(eleitor);
         quant_eleitores++;
         return true;
+    }
+
+    public Eleitor clonar_eleitor(Eleitor original) {
+        if (original == null) {
+            return null;
+        }
+        return original.clone();
     }
 
     public void notificar_inicio_fala(String nomeCandidato, String partidoCandidato, String etapa) {

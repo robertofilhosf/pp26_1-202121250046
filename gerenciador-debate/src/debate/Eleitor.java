@@ -1,10 +1,9 @@
 package debate;
 
-public class Eleitor implements ObservadorEleitor, Cloneable {
+public class Eleitor implements ObservadorEleitor, Prototype<Eleitor>, Cloneable {
     private String nome;
     private ColaboradorPolitico candidato_preferencia;
 
-    // Construtor padrão para uso pelo Builder
     Eleitor() {
     }
 
@@ -13,7 +12,6 @@ public class Eleitor implements ObservadorEleitor, Cloneable {
         this.candidato_preferencia = candidato_preferencia;
     }
 
-    // --- Prototype: clone() ---
     @Override
     public Eleitor clone() {
         try {

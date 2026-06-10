@@ -1,6 +1,6 @@
 package debate;
 
-public class ColaboradorPolitico implements Cloneable {
+public class ColaboradorPolitico implements Prototype<ColaboradorPolitico>, SujeitoPolitico, Cloneable {
     private String nome;
     private String partido;
     private boolean inquiridor;
@@ -8,25 +8,26 @@ public class ColaboradorPolitico implements Cloneable {
     protected MediadorBase mediador;
     protected GerenciaEleitor gerencia_eleitor;
 
-    // Construtor padrão para uso pelo Builder
     ColaboradorPolitico() {
         this.inquiridor = false;
-        this.microfone = new Microfone();
+        this.microfone = new Microfone(this);
     }
 
     ColaboradorPolitico(String nome, String partido) {
         this.nome = nome;
         this.partido = partido;
         this.inquiridor = false;
-        this.microfone = new Microfone();
+        this.microfone = new Microfone(this);
     }
 
-    // --- Prototype: clone() ---
     @Override
     public ColaboradorPolitico clone() {
         try {
             ColaboradorPolitico copia = (ColaboradorPolitico) super.clone();
-            copia.microfone = new Microfone(); // cada clone recebe um microfone próprio
+            copia.microfone = new Microfone(copia); // cada clone recebe um microfone próprio
+            if (copia.mediador instanceof MediarDebate mediarDebate) {
+                copia.microfone.setGerenciaDR(mediarDebate.getGerenciaDR());
+            }
             return copia;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("Erro ao clonar ColaboradorPolitico", e);
@@ -49,6 +50,21 @@ public class ColaboradorPolitico implements Cloneable {
         }
     }
 
+    @Override
+    public void solicitar_direito_resposta() {
+        System.out.println(nome + " (" + partido + ") acionou o botão DR no microfone.");
+        microfone.pressionarDR();
+    }
+
+    @Override
+    public void realizar_defesa(int tempo, LogSistem log) {
+        notificar_eleitores_antes_fala("direito de resposta");
+        microfone.liga();
+        microfone.passa_tempo(tempo);
+        microfone.desliga();
+        log.register_log("Defesa DR: " + nome + " (" + partido + ") - " + tempo + "s");
+    }
+
     public void set_nome(String n) {
         this.nome = n;
     }
@@ -67,6 +83,9 @@ public class ColaboradorPolitico implements Cloneable {
 
     public void set_mediador(MediadorBase mediator) {
         this.mediador = mediator;
+        if (mediator instanceof MediarDebate mediarDebate) {
+            this.microfone.setGerenciaDR(mediarDebate.getGerenciaDR());
+        }
     }
 
     public MediadorBase get_mediador() {

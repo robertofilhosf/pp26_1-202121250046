@@ -2,9 +2,33 @@ package debate;
 
 public class Microfone {
     private boolean MicroAtivo;
+    private GerenciaDireitoResposta gerenciaDR;
+    private ColaboradorPolitico politico;
 
     public Microfone() {
         this.MicroAtivo = false;
+    }
+
+    public Microfone(ColaboradorPolitico politico) {
+        this.politico = politico;
+        this.MicroAtivo = false;
+    }
+
+    public void setGerenciaDR(GerenciaDireitoResposta gerenciaDR) {
+        this.gerenciaDR = gerenciaDR;
+    }
+
+    public void setPolitico(ColaboradorPolitico politico) {
+        this.politico = politico;
+    }
+
+    public void pressionarDR() {
+        if (gerenciaDR != null && politico != null) {
+            ComandoDireitoResposta cmd = new SolicitarDireitoResposta(politico, gerenciaDR);
+            cmd.executar();
+        } else {
+            System.out.println("[Microfone] Não foi possível registrar a solicitação de DR.");
+        }
     }
 
     public void liga() {
